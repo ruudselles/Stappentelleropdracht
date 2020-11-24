@@ -9,6 +9,9 @@ library(tidyverse)
 library(here)
 library(readr)
 library(janitor)
+
+
+rm(list = ls()) #clear the workspace-------
 #importeren twee databestanden van de stappentelleropdracht
 Intake <- read_csv("data/Klinische_Technologie_Intake.csv")
 Data <- read_csv("data/Klinische_Technologie_Stappenteller_Data.csv")
