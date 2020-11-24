@@ -1,7 +1,6 @@
 # install and loading packages
 install.packages("readxl")
 
-install.packages('here')
 library('here')
 library("tidyverse")
 library("readxl")

@@ -8,42 +8,36 @@
 library(tidyverse)
 library(here)
 library(readr)
-library(janitor)
-
 
 rm(list = ls()) #clear the workspace-------
-#importeren twee databestanden van de stappentelleropdracht
-Intake <- read_csv("data/Klinische_Technologie_Intake.csv")
-Data <- read_csv("data/Klinische_Technologie_Stappenteller_Data.csv")
+Data_Full_anonymous <- read_csv(here("data/Data_Full_anonymous.csv"))
 
-#rm(intake)
+#importeren twee databestanden van de stappentelleropdracht
+Data <- read_csv(here("data/Data_Full_anonymous.csv"))
+
+rm(Data_Full_anonymous)
 
 #CLEAN IT UP 1 ----------
 #Opdracht variabele Namen Opschonen (CleanItUp Lesson 1, video 1)-----------
-CleanIntake <- clean_names(Intake)
+library(janitor)
+
+CleanIntake <- clean_names(Data)
 view(CleanIntake)
 
 #Opdracht variabele herorganiseren (CleanItUp Lesson 1, video 2)-----------
-CleanIntake <- select(CleanIntake, id, geslacht, woon, everything()) #drie variabelen voorop zetten
-CleanIntake <- select(CleanIntake, -submitdate, -startlanguage) #2 variabelen verwijderen
-
+CleanIntake <- select(Data, geslacht, woon, everything()) #drie variabelen voorop zetten
+CleanIntake <- select(CleanIntake, -submitdate.x) #2 variabelen verwijderen
 
 
 #Opdracht Pipe je opschoonacties (CleanItUp Lesson 1, video 3)----
 CleanData <- Data  %>% 
   clean_names() %>% 
-  select(id, nummer, everything()) %>% #zet drie variabelen vooraan in dataframe
-  select(-submitdate,startdate, datestamp, startlanguage, lastpage) #verwijder variabelen uit dataframe
+  select(geslacht, woon, everything())  #zet drie variabelen vooraan in dataframe
   
-#verwijder alles wat niet nodig is voor het vervolg uit de global environment
-rm(Intake, Data)
-
-# Opdracht Data samenvoegen ----
-data_combined <- inner_join(CleanData, CleanIntake, by="nummer")
-
-
+  rm(Data)
+  
 # Clean it up, Lesson 1, Video 2, selecteren van variabelen voor vervolganalyse----
-data_combined <- data_combined %>% 
+CleanData <- CleanData %>% 
   select (geslacht, woon, stap_om_1_aantal, stap_om_2_aantal, 
           stap_om_3_aantal, stap_om_4_aantal, stap_om_5_aantal, 
           stap_om_6_aantal, stap_om_7_aantal)
