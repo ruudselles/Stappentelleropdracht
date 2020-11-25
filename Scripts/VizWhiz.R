@@ -16,44 +16,44 @@ library(ggbeeswarm)
 #Opdracht 1: het plotten van ruwe data (VizWhiz 1, filmpje 1)-----
 
 #importeren data_combined ----
-data_combined <- read_csv("data/data_combined.csv")
+CleanData <- read_csv(here("data/CleanData.csv"))
 
 #plotten aantal stappen per week voor mannen en vrouwen
-data_combined %>% 
+CleanData %>% 
   ggplot(aes(x=geslacht, y = stap_om_week_aantal)) +
            geom_point()
 
 #dezelfde plot, maar dan met Jitter
-data_combined %>% 
+CleanData %>% 
   ggplot(aes(x=geslacht, y = stap_om_week_aantal)) +
   geom_jitter()
 
 #dezelfde plot, maar dan met quasirandom
-data_combined %>% 
+CleanData %>% 
   ggplot(aes(x=geslacht, y = stap_om_week_aantal)) +
   geom_quasirandom()
 
 #Opdracht 2: gebruik van kleuren en meer (VizWhiz 1, filmpje 2) ----
-data_combined %>% 
+CleanData %>% 
   na.omit() %>% 
   ggplot(aes(x=geslacht, y = stap_om_week_aantal)) +
   geom_jitter() 
 
 # verdeling op uit en thuiswonenden
-data_combined %>% 
+CleanData %>% 
   na.omit() %>% 
   ggplot(aes(x=woon, y = stap_om_week_aantal)) +
   geom_jitter() 
 
 #coordinate fli
-data_combined %>% 
+CleanData %>% 
   na.omit() %>% 
   ggplot(aes(x=woon, y = stap_om_week_aantal)) +
   geom_point() + 
   coord_flip()
 
 #kleur voor mannen en vrouwen
-data_combined %>% 
+CleanData %>% 
   na.omit() %>% 
   ggplot(aes(x=woon, y = stap_om_week_aantal, colour = geslacht)) +
   geom_jitter() + 
@@ -61,14 +61,14 @@ data_combined %>%
 
 
 # Opdracht 3 Facet Wraps (vizwhiz 1, derde filmpje)---------
-data_combined %>% 
+CleanData %>% 
   na.omit() %>% 
   ggplot(aes(x=geslacht, y = stap_om_week_aantal)) +
   geom_jitter() +
   facet_wrap( ~ woon)
 
 #add colour
-data_combined %>% 
+CleanData %>% 
   na.omit() %>% 
   ggplot(aes(x=geslacht, y = stap_om_week_aantal, colour = geslacht)) +
   geom_jitter() +
@@ -76,7 +76,7 @@ data_combined %>%
 
 
 #Opdracht Pipe the plot (vizwhiz 1, vierde filmpje)
-data_combined %>% 
+CleanData %>% 
   na.omit() %>% 
   filter (stap_om_week_aantal > 1000) %>% 
   filter (stap_om_week_aantal < 80000) %>% 
@@ -89,7 +89,7 @@ data_combined %>%
   ggsave("stappenMannenVrouwen.png")
 
 #vizwhiz 3, tweede filmpje, error bars
-  data_combined %>% 
+  CleanData %>% 
     na.omit() %>% 
     group_by(geslacht) %>% 
     summarise (mean = mean(stap_om_week_aantal),
@@ -101,21 +101,19 @@ data_combined %>%
     geom_errorbar(aes(x=geslacht, ymin = mean - stderr, ymax = mean+stderr))
   
   #vizwhiz 3, derde filmpje, scatter plot
-  data_combined %>% 
+  CleanData %>% 
     na.omit() %>% 
     ggplot(aes(x=stap_om_1_aantal, y = stap_om_2_aantal, color = geslacht)) +
     geom_point() + 
     geom_smooth() 
     
   #vizwhiz 4, eerste filmpje, themes
-  data_combined %>% 
+  CleanData %>% 
     na.omit() %>% 
-    ggplot(aes(x=stap_om_1_aantal, y = stap_om_2_aantal)) +
+    ggplot(aes(x=stap_om_1_aantal, y = stap_om_2_aantal, color = geslacht)) +
     geom_point() + 
     geom_smooth() + 
     theme_classic() +
     labs(title = "relatie tussen aantal op maandag en aantal stappen op dinsdag", 
          x = 'aanstal stappen op maandag',
          y= 'aantal opstappen op dinsdag')
-  
-  
