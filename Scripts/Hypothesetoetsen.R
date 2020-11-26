@@ -8,8 +8,8 @@ CleanData <- read_csv(here("data", "CleanData.csv" ))
 # hyopthese toetsen
 # Op basis van deel 1 van video 2 (tot 8.50 minuten)
 # is het verschil tussen het gemiddelde aantal stappen per week van mannen en vrouwen significant?
-# is de data normaal verdeeld (density plot)?
 
+# Eerst te beantwoorden: zijn de data normaal verdeeld (density plot)?
 CleanData %>%
   na.omit() %>%
   ggplot(aes(x = stap_om_week_aantal, fill = geslacht))+
@@ -38,7 +38,7 @@ CleanData %>%
 wilcox.test(CleanData$stap_om_week_aantal, mu = 70000)
 
 #en als het aantal stappen per dag maar 7000 zou zijn (49000 per week)?
-wilcox.test(CleanData$stap_om_week_aantal, mu = 49000)
+wilcox.test(CleanData$stap_om_week_aantal, mu = 36000)
 
 
 # is er een relatie tussen het aantal stappen op maandag en zaterdag?
@@ -57,7 +57,16 @@ CleanData %>%
 CleanData %>% 
   na.omit() %>%   
   ggplot(aes(x =  stap_om_1_aantal, y = stap_om_6_aantal)) +
-  geom_point()
+  geom_point() + 
+  coord_fixed(ratio = 1)
+
+#filter er bij om uitschieters te verwijderen
+CleanData %>% 
+  filter(stap_om_1_aantal < 20000) %>% 
+  na.omit() %>%   
+  ggplot(aes(x =  stap_om_1_aantal, y = stap_om_6_aantal)) +
+  geom_point() + 
+  coord_fixed(ratio = 1)
 
 # correlatie test met de data 
 cor.test(CleanData$stap_om_1_aantal, CleanData$stap_om_6_aantal, method = 'pearson')
