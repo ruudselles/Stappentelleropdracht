@@ -117,3 +117,5 @@ CleanData %>%
     labs(title = "relatie tussen aantal op maandag en aantal stappen op dinsdag", 
          x = 'aanstal stappen op maandag',
          y= 'aantal opstappen op dinsdag')
+
+  
